@@ -1,0 +1,65 @@
+fix: Upgrade OWASP Dependency Check to 10.0.4 for NVD API 2.0 support
+
+## Problem
+CircleCI pipeline failing with 403 Forbidden errors during OWASP dependency check:
+
+```
+Error retrieving https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.meta; 
+received response code 403; Forbidden
+```
+
+## Root Cause
+- NVD (National Vulnerability Database) deprecated and shut down the legacy 
+  JSON 1.1 data feeds in December 2023
+- Project was using OWASP Dependency Check v8.2.1 which only supports the 
+  deprecated feeds
+- NVD now requires using their API 2.0 instead of the old data feeds
+- OWASP versions prior to 10.0.2 are no longer supported
+
+## Solution
+1. Upgraded OWASP Dependency Check plugin from 8.2.1 to 10.0.4
+2. Added NVD API key configuration to support the new API 2.0
+3. Configured CVSS threshold to fail build on score >= 7 (HIGH/CRITICAL)
+4. Created documentation for team reference
+
+## Changes Made
+- `build.gradle`: 
+  - Updated plugin version from 8.2.1 to 10.0.4 (line 6)
+  - Added dependencyCheck configuration block (lines 144-155)
+  - Configured NVD API key support via environment variable
+  - Set CVSS threshold to 7
+- `OWASP_FIX_README.md`: Complete setup guide and troubleshooting
+
+## Action Required
+**CRITICAL**: An NVD API key must be added to CircleCI for this to work properly.
+
+### Steps:
+1. Request API key from: https://nvd.nist.gov/developers/request-an-api-key
+2. Add to CircleCI: Project Settings → Environment Variables
+   - Name: `NVD_API_KEY`
+   - Value: <your-api-key>
+3. Ensure the `dataworks-common` context has access to this variable
+
+Without the API key, the OWASP check will be extremely slow (30+ minutes) 
+and may timeout.
+
+## Testing
+After adding the NVD API key to CircleCI:
+- First run will take 10-15 minutes (downloads NVD database)
+- Subsequent runs will take 2-5 minutes (uses cache)
+- Review dependency-check report for any vulnerabilities
+
+## References
+- OWASP Dependency Check: https://jeremylong.github.io/DependencyCheck/
+- NVD API Documentation: https://nvd.nist.gov/developers
+- Setup Guide: See OWASP_FIX_README.md in this repository
+
+## Breaking Changes
+None - the upgrade is backward compatible. The only requirement is adding 
+the NVD API key to CircleCI environment variables.
+
+## Related
+- Fixes OWASP dependency check failures in CircleCI pipeline
+- Aligns with NVD's migration from legacy feeds to API 2.0
+- Forked from ministryofjustice/digital-prison-reporting-lambdas
+
