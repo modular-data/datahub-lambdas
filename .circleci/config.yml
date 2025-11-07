@@ -14,10 +14,13 @@ workflows:
         cache_key: "dwh-lambdas-build-cache-v5-clean"
         pre-steps:
         - run:
-            name: Clear Corrupted Gradle Cache
+            name: Check Disk Space and Clear Gradle
             command: |
-              rm -rf ~/.gradle/caches/jars-9/
-              rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
+              df -h
+              echo "Removing entire Gradle directory..."
+              rm -rf ~/.gradle
+              mkdir -p ~/.gradle
+              df -h
     - dataworks/gradle_build_publish:
         tag: "11.0"
         app: digital-prison-reporting-lambdas
@@ -42,10 +45,13 @@ workflows:
         cache_key: "dwh-lambdas-build-cache-v5-clean"
         pre-steps:
         - run:
-            name: Clear Corrupted Gradle Cache
+            name: Check Disk Space and Clear Gradle
             command: |
-              rm -rf ~/.gradle/caches/jars-9/
-              rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
+              df -h
+              echo "Removing entire Gradle directory..."
+              rm -rf ~/.gradle
+              mkdir -p ~/.gradle
+              df -h
 
   owasp-security:
     triggers:
@@ -64,7 +70,10 @@ workflows:
         cache_key: "dwh-lambdas-owasp-build-cache-v3-clean"
         pre-steps:
         - run:
-            name: Clear Corrupted Gradle Cache
+            name: Check Disk Space and Clear Gradle
             command: |
-              rm -rf ~/.gradle/caches/jars-9/
-              rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
+              df -h
+              echo "Removing entire Gradle directory..."
+              rm -rf ~/.gradle
+              mkdir -p ~/.gradle
+              df -h
