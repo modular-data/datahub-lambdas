@@ -11,7 +11,7 @@ workflows:
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v3"
+        cache_key: "dwh-lambdas-build-cache-v4"
     - dataworks/gradle_build_publish:
         tag: "11.0"
         app: digital-prison-reporting-lambdas
@@ -33,7 +33,7 @@ workflows:
         ref: << pipeline.git.branch >><< pipeline.git.tag >>
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v3"
+        cache_key: "dwh-lambdas-build-cache-v4"
 
   owasp-security:
     triggers:
