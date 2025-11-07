@@ -12,14 +12,19 @@ workflows:
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v5-clean"
+        build_args: "--no-daemon --refresh-dependencies"
         pre-steps:
         - run:
             name: Check Disk Space and Clear Gradle
             command: |
               df -h
+              echo "Killing any existing Gradle daemons..."
+              pkill -f gradle || true
               echo "Removing entire Gradle directory..."
               rm -rf ~/.gradle
               mkdir -p ~/.gradle
+              echo "Cleaning project build directory..."
+              rm -rf build .gradle
               df -h
     - dataworks/gradle_build_publish:
         tag: "11.0"
@@ -34,6 +39,7 @@ workflows:
         notify_slack: false
         channel: dataworks-alerts
         command: jar shadowJar # Skip tests when building jar, they've already run
+        build_args: "--no-daemon --refresh-dependencies"
         filters:
           branches:
             only: /.*/
@@ -48,9 +54,13 @@ workflows:
             name: Check Disk Space and Clear Gradle
             command: |
               df -h
+              echo "Killing any existing Gradle daemons..."
+              pkill -f gradle || true
               echo "Removing entire Gradle directory..."
               rm -rf ~/.gradle
               mkdir -p ~/.gradle
+              echo "Cleaning project build directory..."
+              rm -rf build .gradle
               df -h
 
   owasp-security:
@@ -68,12 +78,17 @@ workflows:
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-owasp-build-cache-v3-clean"
+        build_args: "--no-daemon --refresh-dependencies"
         pre-steps:
         - run:
             name: Check Disk Space and Clear Gradle
             command: |
               df -h
+              echo "Killing any existing Gradle daemons..."
+              pkill -f gradle || true
               echo "Removing entire Gradle directory..."
               rm -rf ~/.gradle
               mkdir -p ~/.gradle
+              echo "Cleaning project build directory..."
+              rm -rf build .gradle
               df -h
