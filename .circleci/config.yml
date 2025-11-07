@@ -12,6 +12,12 @@ workflows:
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v4"
+        pre-steps:
+          - run:
+              name: Clear Corrupted Gradle Cache
+              command: |
+                rm -rf ~/.gradle/caches/jars-9/
+                rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
     - dataworks/gradle_build_publish:
         tag: "11.0"
         app: digital-prison-reporting-lambdas
@@ -34,6 +40,12 @@ workflows:
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v4"
+        pre-steps:
+          - run:
+              name: Clear Corrupted Gradle Cache
+              command: |
+                rm -rf ~/.gradle/caches/jars-9/
+                rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
 
   owasp-security:
     triggers:
