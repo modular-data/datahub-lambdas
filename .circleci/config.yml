@@ -29,7 +29,7 @@ workflows:
               df -h
     - dataworks/gradle_build_publish:
         tag: "11.0"
-        app: digital-prison-reporting-lambdas
+        app: datahub-lambdas
         app_artifacts_directory: build/libs/
         bucket_prefix: dwh-artifact-store
         sync_args: "--exclude '*' --include '*-all*jar'"

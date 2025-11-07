@@ -1,20 +1,26 @@
 # Fixes Applied to datahub-lambdas
 
-## 🎯 Two Issues Fixed
+## 🎯 Three Issues Fixed
 
 ### Issue #1: OWASP Dependency Check - 403 Forbidden ❌
-**Error**: 
+**Error**:
 ```
-Error retrieving https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.meta; 
+Error retrieving https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.meta;
 received response code 403; Forbidden
 ```
 
-### Issue #2: Gradle Cache Corruption ❌
+### Issue #2: Gradle 7.5.1 Parallel Execution Bug ❌
 **Error**:
 ```
-java.util.concurrent.ExecutionException: org.gradle.api.GradleException: 
+java.util.concurrent.ExecutionException: org.gradle.api.GradleException:
 Failed to create Jar file /home/circleci/.gradle/caches/jars-9/...jackson-core-2.17.2.jar
 ```
+
+**Root Cause**: Known bug in Gradle 7.5.1 with parallel execution causing jar file corruption.
+**Reference**: https://stackoverflow.com/questions/77225378/gradle-clean-fails-with-gradleexception-failed-to-create-jar-file
+
+### Issue #3: Gradle Cache Corruption ❌
+**Related to Issue #2** - Corrupted cache from previous parallel execution runs.
 
 ---
 
@@ -29,7 +35,7 @@ Failed to create Jar file /home/circleci/.gradle/caches/jars-9/...jackson-core-2
    ```gradle
    # Before:
    id 'org.owasp.dependencycheck'  version '8.2.1'
-   
+
    # After:
    id 'org.owasp.dependencycheck'  version '10.0.4'
    ```
@@ -48,7 +54,22 @@ Failed to create Jar file /home/circleci/.gradle/caches/jars-9/...jackson-core-2
 
 ---
 
-### Fix #2: Updated CircleCI Cache Keys
+### Fix #2: Disabled Gradle Parallel Execution
+
+**File**: `gradle.properties` (NEW FILE)
+
+**Changes**:
+```properties
+# Disable parallel execution to fix Gradle 7.5.1 jar corruption bug
+org.gradle.parallel=false
+```
+
+**Why**: Gradle 7.5.1 has a known bug where parallel execution causes jar file corruption in the cache.
+**Reference**: https://stackoverflow.com/questions/77225378/gradle-clean-fails-with-gradleexception-failed-to-create-jar-file
+
+---
+
+### Fix #3: Updated CircleCI Cache Keys
 
 **File**: `.circleci/config.yml`
 
@@ -128,10 +149,11 @@ Without this key, the OWASP check will be extremely slow (30+ minutes) and may t
 ## 📝 Files Changed
 
 1. ✅ `build.gradle` - OWASP plugin upgrade + NVD API configuration
-2. ✅ `.circleci/config.yml` - Cache key updates (v2→v3, v1→v2)
-3. ✅ `OWASP_FIX_README.md` - Complete documentation
-4. ✅ `COMMIT_MESSAGE.txt` - Ready-to-use commit message
-5. ✅ `FIXES_APPLIED.md` - This file
+2. ✅ `gradle.properties` - **NEW FILE** - Disables parallel execution (fixes Gradle 7.5.1 bug)
+3. ✅ `.circleci/config.yml` - Cache key updates (v2→v3, v1→v2)
+4. ✅ `OWASP_FIX_README.md` - Complete documentation
+5. ✅ `COMMIT_MESSAGE.txt` - Ready-to-use commit message
+6. ✅ `FIXES_APPLIED.md` - This file
 
 ---
 
