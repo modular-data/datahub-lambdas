@@ -7,46 +7,46 @@ orbs:
 workflows:
   checkout-build-publish:
     jobs:
-      - dataworks/gradle_owasp_check:
-          notify_slack: false
-          context:
-            - dataworks-common
-          cache_key: "dwh-lambdas-build-cache-v2"
-      - dataworks/gradle_build_publish:
-          tag: "11.0"
-          app: digital-prison-reporting-lambdas
-          app_artifacts_directory: build/libs/
-          bucket_prefix: dwh-artifact-store
-          sync_args: "--exclude '*' --include '*-all*jar'"
-          deploy_to_test: true # Deploy to Test Environment
-          refresh_lambda: true
-          refresh_function: dwh-pipeline-notification-function
-          notify_jira: true
-          notify_slack: true
-          channel: dataworks-alerts
-          command: jar shadowJar # Skip tests when building jar, they've already run
-          filters:
-            branches:
-              only: /.*/
-            tags:
-              ignore: /.*/
-          ref: << pipeline.git.branch >><< pipeline.git.tag >>
-          context:
-            - dataworks-common
-          cache_key: "dwh-lambdas-build-cache-v2"
+    - dataworks/gradle_owasp_check:
+        notify_slack: false
+        context:
+        - dataworks-common
+        cache_key: "dwh-lambdas-build-cache-v3"
+    - dataworks/gradle_build_publish:
+        tag: "11.0"
+        app: digital-prison-reporting-lambdas
+        app_artifacts_directory: build/libs/
+        bucket_prefix: dwh-artifact-store
+        sync_args: "--exclude '*' --include '*-all*jar'"
+        deploy_to_test: true # Deploy to Test Environment
+        refresh_lambda: true
+        refresh_function: dwh-pipeline-notification-function
+        notify_jira: false
+        notify_slack: false
+        channel: dataworks-alerts
+        command: jar shadowJar # Skip tests when building jar, they've already run
+        filters:
+          branches:
+            only: /.*/
+          tags:
+            ignore: /.*/
+        ref: << pipeline.git.branch >><< pipeline.git.tag >>
+        context:
+        - dataworks-common
+        cache_key: "dwh-lambdas-build-cache-v3"
 
   owasp-security:
     triggers:
-      - schedule:
-          cron: "30 6 * * *" ## Runs everyday at 7.30 AM UK TIME
-          filters:
-            branches:
-              only:
-                - main
+    - schedule:
+        cron: "30 6 * * *" ## Runs everyday at 7.30 AM UK TIME
+        filters:
+          branches:
+            only:
+            - main
     jobs:
-      - dataworks/gradle_owasp_check:
-          notify_slack: true
-          channel: dataworks-alerts
-          context:
-            - dataworks-common
-          cache_key: "dwh-lambdas-owasp-build-cache-v1"
+    - dataworks/gradle_owasp_check:
+        notify_slack: false
+        channel: dataworks-alerts
+        context:
+        - dataworks-common
+        cache_key: "dwh-lambdas-owasp-build-cache-v2"

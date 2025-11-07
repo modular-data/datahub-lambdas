@@ -23,11 +23,15 @@ received response code 403; Forbidden
 4. Created documentation for team reference
 
 ## Changes Made
-- `build.gradle`: 
+- `build.gradle`:
   - Updated plugin version from 8.2.1 to 10.0.4 (line 6)
   - Added dependencyCheck configuration block (lines 144-155)
   - Configured NVD API key support via environment variable
   - Set CVSS threshold to 7
+- `.circleci/config.yml`:
+  - Updated cache keys to v3 (forces fresh cache, fixes Gradle jar corruption)
+  - Changed "dwh-lambdas-build-cache-v2" → "dwh-lambdas-build-cache-v3"
+  - Changed "dwh-lambdas-owasp-build-cache-v1" → "dwh-lambdas-owasp-build-cache-v2"
 - `OWASP_FIX_README.md`: Complete setup guide and troubleshooting
 
 ## Action Required

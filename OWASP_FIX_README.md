@@ -159,6 +159,32 @@ The orb automatically:
 
 ## 🐛 Troubleshooting
 
+### Issue: "Failed to create Jar file" error (Gradle cache corruption)
+**Error Message**:
+```
+java.util.concurrent.ExecutionException: org.gradle.api.GradleException:
+Failed to create Jar file /home/circleci/.gradle/caches/jars-9/...jackson-core-2.17.2.jar
+```
+
+**Solution**: This is a Gradle cache corruption issue. In CircleCI, clear the cache:
+1. **Option A - Change cache key** (recommended):
+   - Edit `.circleci/config.yml`
+   - Change `cache_key: "dwh-lambdas-build-cache-v2"` to `"dwh-lambdas-build-cache-v3"`
+   - This forces CircleCI to create a fresh cache
+
+2. **Option B - Clear cache via CircleCI UI**:
+   - Go to your project in CircleCI
+   - Click on a recent build
+   - Click "Rerun workflow from failed" → "Rerun workflow with SSH"
+   - SSH in and run: `rm -rf ~/.gradle/caches/jars-9`
+
+3. **Option C - Locally**:
+   ```bash
+   ./gradlew --stop
+   rm -rf ~/.gradle/caches/jars-9
+   ./gradlew clean build
+   ```
+
 ### Issue: Still getting 403 errors
 **Solution**: Make sure you've committed and pushed the `build.gradle` changes with version 10.0.4.
 
@@ -166,7 +192,7 @@ The orb automatically:
 **Solution**: Add the NVD API key to CircleCI environment variables.
 
 ### Issue: Build fails with vulnerabilities found
-**Solution**: 
+**Solution**:
 1. Review the dependency-check report
 2. Update vulnerable dependencies
 3. Add suppressions for false positives
