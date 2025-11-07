@@ -11,13 +11,13 @@ workflows:
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v4"
+        cache_key: "dwh-lambdas-build-cache-v5-clean"
         pre-steps:
-          - run:
-              name: Clear Corrupted Gradle Cache
-              command: |
-                rm -rf ~/.gradle/caches/jars-9/
-                rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
+        - run:
+            name: Clear Corrupted Gradle Cache
+            command: |
+              rm -rf ~/.gradle/caches/jars-9/
+              rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
     - dataworks/gradle_build_publish:
         tag: "11.0"
         app: digital-prison-reporting-lambdas
@@ -39,13 +39,13 @@ workflows:
         ref: << pipeline.git.branch >><< pipeline.git.tag >>
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v4"
+        cache_key: "dwh-lambdas-build-cache-v5-clean"
         pre-steps:
-          - run:
-              name: Clear Corrupted Gradle Cache
-              command: |
-                rm -rf ~/.gradle/caches/jars-9/
-                rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
+        - run:
+            name: Clear Corrupted Gradle Cache
+            command: |
+              rm -rf ~/.gradle/caches/jars-9/
+              rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
 
   owasp-security:
     triggers:
@@ -61,4 +61,10 @@ workflows:
         channel: dataworks-alerts
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-owasp-build-cache-v2"
+        cache_key: "dwh-lambdas-owasp-build-cache-v3-clean"
+        pre-steps:
+        - run:
+            name: Clear Corrupted Gradle Cache
+            command: |
+              rm -rf ~/.gradle/caches/jars-9/
+              rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
