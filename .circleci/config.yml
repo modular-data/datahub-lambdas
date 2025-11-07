@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  dataworks: modular-data/dataworks-orb@0.0.8
+  dataworks: modular-data/dataworks-orb@0.0.9
   slack: circleci/slack@4.12.5
 
 workflows:
