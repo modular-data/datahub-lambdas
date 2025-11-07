@@ -56,15 +56,15 @@ workflows:
             command: |
               df -h
               echo "Killing any existing Gradle daemons..."
-              pkill -f gradle || true
-              echo "Removing entire Gradle directory..."
-              rm -rf ~/.gradle
-              mkdir -p ~/.gradle
-              echo "Disabling Gradle daemon..."
-              echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
-              echo "Cleaning project build directory..."
-              rm -rf build .gradle
-              df -h
+              #pkill -f gradle || true
+              #echo "Removing entire Gradle directory..."
+              #rm -rf ~/.gradle
+              #mkdir -p ~/.gradle
+              #echo "Disabling Gradle daemon..."
+              #echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
+              #echo "Cleaning project build directory..."
+              #rm -rf build .gradle
+              #df -h
 
   owasp-security:
     triggers:
