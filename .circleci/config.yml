@@ -12,7 +12,6 @@ workflows:
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v5-clean"
-        build_args: "--no-daemon --refresh-dependencies"
         pre-steps:
         - run:
             name: Check Disk Space and Clear Gradle
@@ -23,6 +22,8 @@ workflows:
               echo "Removing entire Gradle directory..."
               rm -rf ~/.gradle
               mkdir -p ~/.gradle
+              echo "Disabling Gradle daemon..."
+              echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
               echo "Cleaning project build directory..."
               rm -rf build .gradle
               df -h
@@ -59,6 +60,8 @@ workflows:
               echo "Removing entire Gradle directory..."
               rm -rf ~/.gradle
               mkdir -p ~/.gradle
+              echo "Disabling Gradle daemon..."
+              echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
               echo "Cleaning project build directory..."
               rm -rf build .gradle
               df -h
@@ -78,7 +81,6 @@ workflows:
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-owasp-build-cache-v3-clean"
-        build_args: "--no-daemon --refresh-dependencies"
         pre-steps:
         - run:
             name: Check Disk Space and Clear Gradle
@@ -89,6 +91,8 @@ workflows:
               echo "Removing entire Gradle directory..."
               rm -rf ~/.gradle
               mkdir -p ~/.gradle
+              echo "Disabling Gradle daemon..."
+              echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
               echo "Cleaning project build directory..."
               rm -rf build .gradle
               df -h
