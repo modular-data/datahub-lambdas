@@ -9,12 +9,14 @@ workflows:
     jobs:
     - dataworks/gradle_owasp_check:
         tag: "11.0"
+        class: large
         notify_slack: false
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v10-java11-nopara"
     - dataworks/gradle_build_publish:
         tag: "11.0"
+        class: large
         notify_slack: false
         context:
         - dataworks-common
@@ -31,6 +33,7 @@ workflows:
     jobs:
     - dataworks/gradle_owasp_check:
         tag: "11.0"
+        class: large
         notify_slack: false
         channel: dataworks-alerts
         context:
