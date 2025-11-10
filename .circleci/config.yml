@@ -8,13 +8,11 @@ workflows:
   checkout-build-publish:
     jobs:
     - reporting/gradle_owasp_check:
-        tag: "11.0"
         notify_slack: false
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v11-hmpps-test"
     - reporting/gradle_build_publish:
-        tag: "11.0"
         app: datahub-lambdas
         app_artifacts_directory: build/libs/
         bucket_prefix: dataworks-artifact-store
@@ -33,7 +31,6 @@ workflows:
             - main
     jobs:
     - reporting/gradle_owasp_check:
-        tag: "11.0"
         notify_slack: false
         channel: dataworks-alerts
         context:
