@@ -20,7 +20,7 @@ workflows:
         bucket_prefix: dataworks-artifact-store
         notify_slack: false
         context:
-        - dataworks-common
+        - md-dataworks-common
         cache_key: "dwh-lambdas-build-cache-v13"
 
   #owasp-security:
