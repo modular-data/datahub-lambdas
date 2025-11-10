@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  dataworks: modular-data/dataworks-orb@0.0.14
+  dataworks: modular-data/dataworks-orb@0.0.15
   slack: circleci/slack@4.12.5
 
 workflows:
@@ -19,7 +19,6 @@ workflows:
         app_artifacts_directory: build/libs/
         bucket_prefix: dataworks-artifact-store
         notify_slack: false
-        release_ready: false
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v13"
