@@ -140,3 +140,11 @@ test {
 assemble {
   dependsOn shadowJar
 }
+
+dependencyCheck {
+    // Skip NVD database updates entirely (avoids 403 from deprecated API)
+    autoUpdate = false
+    
+    // Fail build on CVSS score of 7 or higher
+    failBuildOnCVSS = 7
+}

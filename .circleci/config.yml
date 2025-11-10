@@ -12,21 +12,7 @@ workflows:
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v12-nuclear"
-        pre-steps:
-        - run:
-            name: Nuclear cache clear - remove all Gradle artifacts
-            command: |
-              echo "Performing nuclear cache clear..."
-              rm -rf ~/.gradle || true
-              rm -rf ~/.m2 || true
-              rm -rf /home/circleci/.gradle || true
-              mkdir -p ~/.gradle
-              echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
-              echo "org.gradle.vfs.watch=false" >> ~/.gradle/gradle.properties
-              echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
-              echo "org.gradle.caching=false" >> ~/.gradle/gradle.properties
-              echo "Cache cleared, Gradle configured"
+        cache_key: "dwh-lambdas-build-cache-v13"
     - dataworks/gradle_build_publish:
         tag: "11.0"
         app: datahub-lambdas
@@ -35,21 +21,7 @@ workflows:
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v12-nuclear"
-        pre-steps:
-        - run:
-            name: Nuclear cache clear - remove all Gradle artifacts
-            command: |
-              echo "Performing nuclear cache clear..."
-              rm -rf ~/.gradle || true
-              rm -rf ~/.m2 || true
-              rm -rf /home/circleci/.gradle || true
-              mkdir -p ~/.gradle
-              echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
-              echo "org.gradle.vfs.watch=false" >> ~/.gradle/gradle.properties
-              echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
-              echo "org.gradle.caching=false" >> ~/.gradle/gradle.properties
-              echo "Cache cleared, Gradle configured"
+        cache_key: "dwh-lambdas-build-cache-v13"
 
   owasp-security:
     triggers:
