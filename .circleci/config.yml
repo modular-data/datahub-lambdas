@@ -19,6 +19,7 @@ workflows:
         app_artifacts_directory: build/libs/
         bucket_prefix: dataworks-artifact-store
         notify_slack: false
+        release_ready: false
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v13"
