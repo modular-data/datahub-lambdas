@@ -12,29 +12,13 @@ workflows:
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v9-java11-nowfs"
-        pre-steps:
-        - run:
-            name: Configure Gradle to disable file system watching
-            command: |
-              mkdir -p ~/.gradle
-              echo "org.gradle.vfs.watch=false" >> ~/.gradle/gradle.properties
-              echo "org.gradle.caching=false" >> ~/.gradle/gradle.properties
-              cat ~/.gradle/gradle.properties
+        cache_key: "dwh-lambdas-build-cache-v10-java11-nopara"
     - dataworks/gradle_build_publish:
         tag: "11.0"
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v9-java11-nowfs"
-        pre-steps:
-        - run:
-            name: Configure Gradle to disable file system watching
-            command: |
-              mkdir -p ~/.gradle
-              echo "org.gradle.vfs.watch=false" >> ~/.gradle/gradle.properties
-              echo "org.gradle.caching=false" >> ~/.gradle/gradle.properties
-              cat ~/.gradle/gradle.properties
+        cache_key: "dwh-lambdas-build-cache-v10-java11-nopara"
 
   owasp-security:
     triggers:
@@ -51,12 +35,4 @@ workflows:
         channel: dataworks-alerts
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-owasp-build-cache-v6-java11-nowfs"
-        pre-steps:
-        - run:
-            name: Configure Gradle to disable file system watching
-            command: |
-              mkdir -p ~/.gradle
-              echo "org.gradle.vfs.watch=false" >> ~/.gradle/gradle.properties
-              echo "org.gradle.caching=false" >> ~/.gradle/gradle.properties
-              cat ~/.gradle/gradle.properties
+        cache_key: "dwh-lambdas-owasp-build-cache-v7-java11-nopara"
