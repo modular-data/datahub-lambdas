@@ -142,10 +142,8 @@ assemble {
 }
 
 dependencyCheck {
-    // NVD API Key configuration - set via environment variable or gradle property
-    nvd {
-        apiKey = System.getenv('NVD_API_KEY') ?: project.findProperty('nvdApiKey') ?: ''
-    }
+    // NVD API Key configuration - set via environment variable or gradle property (v8.x syntax)
+    nvdApiKey = System.getenv('NVD_API_KEY') ?: project.findProperty('nvdApiKey') ?: ''
 
     // Fail build on CVSS score of 7 or higher (adjust as needed)
     failBuildOnCVSS = 7
