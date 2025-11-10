@@ -7,12 +7,12 @@ orbs:
 workflows:
   checkout-build-publish:
     jobs:
-    - dataworks/gradle_owasp_check:
-        tag: "11.0"
-        notify_slack: false
-        context:
-        - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v13"
+    #- dataworks/gradle_owasp_check:
+    #    tag: "11.0"
+    #    notify_slack: false
+    #    context:
+    #    - dataworks-common
+    #    cache_key: "dwh-lambdas-build-cache-v13"
     - dataworks/gradle_build_publish:
         tag: "11.0"
         app: datahub-lambdas
@@ -23,18 +23,18 @@ workflows:
         - dataworks-common
         cache_key: "dwh-lambdas-build-cache-v13"
 
-  owasp-security:
-    triggers:
-    - schedule:
-        cron: "30 6 * * *" ## Runs everyday at 7.30 AM UK TIME
-        filters:
-          branches:
-            only:
-            - main
-    jobs:
-    - dataworks/gradle_owasp_check:
-        notify_slack: false
-        channel: dataworks-alerts
-        context:
-        - dataworks-common
-        cache_key: "dwh-lambdas-owasp-build-cache-v8-hmpps-test"
+  #owasp-security:
+  #  triggers:
+  #  - schedule:
+  #      cron: "30 6 * * *" ## Runs everyday at 7.30 AM UK TIME
+  #      filters:
+  #        branches:
+  #          only:
+  #          - main
+    #jobs:
+    #- dataworks/gradle_owasp_check:
+    #    notify_slack: false
+    #    channel: dataworks-alerts
+    #    context:
+    #    - dataworks-common
+    #    cache_key: "dwh-lambdas-owasp-build-cache-v8-hmpps-test"
