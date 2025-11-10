@@ -8,63 +8,18 @@ workflows:
   checkout-build-publish:
     jobs:
     - dataworks/gradle_owasp_check:
+        tag: "17.0"
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v5-clean"
-        pre-steps:
-        - run:
-            name: Check Disk Space and Clear Gradle
-            command: |
-              df -h
-              echo "Killing any existing Gradle daemons..."
-              pkill -f gradle || true
-              echo "Removing entire Gradle directory..."
-              rm -rf ~/.gradle
-              mkdir -p ~/.gradle
-              echo "Disabling Gradle daemon..."
-              echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
-              echo "Cleaning project build directory..."
-              rm -rf build .gradle
-              df -h
+        cache_key: "dwh-lambdas-build-cache-v6-java17"
     - dataworks/gradle_build_publish:
-        tag: "11.0"
-        app: datahub-lambdas
-        app_artifacts_directory: build/libs/
-        bucket_prefix: dwh-artifact-store
-        sync_args: "--exclude '*' --include '*-all*jar'"
-        deploy_to_test: true # Deploy to Test Environment
-        refresh_lambda: true
-        refresh_function: dwh-pipeline-notification-function
-        notify_jira: false
+        tag: "17.0"
         notify_slack: false
-        channel: dataworks-alerts
-        command: jar shadowJar # Skip tests when building jar, they've already run
-        build_args: "--no-daemon --refresh-dependencies"
-        filters:
-          branches:
-            only: /.*/
-          tags:
-            ignore: /.*/
-        ref: << pipeline.git.branch >><< pipeline.git.tag >>
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v5-clean"
-        pre-steps:
-        - run:
-            name: Check Disk Space and Clear Gradle
-            command: |
-              df -h
-              echo "Killing any existing Gradle daemons..."
-              #pkill -f gradle || true
-              #echo "Removing entire Gradle directory..."
-              #rm -rf ~/.gradle
-              #mkdir -p ~/.gradle
-              #echo "Disabling Gradle daemon..."
-              #echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
-              #echo "Cleaning project build directory..."
-              #rm -rf build .gradle
-              #df -h
+        build_args: "--no-daemon --refresh-dependencies"
+        cache_key: "dwh-lambdas-build-cache-v6-java17"
 
   owasp-security:
     triggers:
@@ -81,18 +36,3 @@ workflows:
         context:
         - dataworks-common
         cache_key: "dwh-lambdas-owasp-build-cache-v3-clean"
-        pre-steps:
-        - run:
-            name: Check Disk Space and Clear Gradle
-            command: |
-              df -h
-              echo "Killing any existing Gradle daemons..."
-              pkill -f gradle || true
-              echo "Removing entire Gradle directory..."
-              rm -rf ~/.gradle
-              mkdir -p ~/.gradle
-              echo "Disabling Gradle daemon..."
-              echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties
-              echo "Cleaning project build directory..."
-              rm -rf build .gradle
-              df -h
