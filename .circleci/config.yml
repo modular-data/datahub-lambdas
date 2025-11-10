@@ -1,26 +1,27 @@
 version: 2.1
 
 orbs:
-  dataworks: modular-data/dataworks-orb@0.0.12
+  reporting: ministryofjustice/hmpps-reporting@1.0.53
   slack: circleci/slack@4.12.5
 
 workflows:
   checkout-build-publish:
     jobs:
-    - dataworks/gradle_owasp_check:
+    - reporting/gradle_owasp_check:
         tag: "11.0"
-        class: large
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v10-java11-nopara"
-    - dataworks/gradle_build_publish:
+        cache_key: "dwh-lambdas-build-cache-v11-hmpps-test"
+    - reporting/gradle_build_publish:
         tag: "11.0"
-        class: large
+        app: datahub-lambdas
+        app_artifacts_directory: build/libs/
+        bucket_prefix: dataworks-artifact-store
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v10-java11-nopara"
+        cache_key: "dwh-lambdas-build-cache-v11-hmpps-test"
 
   owasp-security:
     triggers:
@@ -31,11 +32,10 @@ workflows:
             only:
             - main
     jobs:
-    - dataworks/gradle_owasp_check:
+    - reporting/gradle_owasp_check:
         tag: "11.0"
-        class: large
         notify_slack: false
         channel: dataworks-alerts
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-owasp-build-cache-v7-java11-nopara"
+        cache_key: "dwh-lambdas-owasp-build-cache-v8-hmpps-test"
