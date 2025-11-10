@@ -2,24 +2,23 @@ version: 2.1
 
 orbs:
   dataworks: modular-data/dataworks-orb@dev:c59a3c65f96182a21332d711a261e1a68b2761eb
-  slack: circleci/slack@4.12.5 
+  slack: circleci/slack@4.12.5
 
 workflows:
   checkout-build-publish:
     jobs:
     - dataworks/gradle_owasp_check:
-        tag: "17.0"
+        tag: "11.0"
         notify_slack: false
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-build-cache-v6-java17"
+        cache_key: "dwh-lambdas-build-cache-v8-java11-clean"
     - dataworks/gradle_build_publish:
-        tag: "17.0"
+        tag: "11.0"
         notify_slack: false
         context:
         - dataworks-common
-        build_args: "--no-daemon --refresh-dependencies"
-        cache_key: "dwh-lambdas-build-cache-v6-java17"
+        cache_key: "dwh-lambdas-build-cache-v8-java11-clean"
 
   owasp-security:
     triggers:
@@ -31,8 +30,9 @@ workflows:
             - main
     jobs:
     - dataworks/gradle_owasp_check:
+        tag: "11.0"
         notify_slack: false
         channel: dataworks-alerts
         context:
         - dataworks-common
-        cache_key: "dwh-lambdas-owasp-build-cache-v3-clean"
+        cache_key: "dwh-lambdas-owasp-build-cache-v5-java11-clean"
