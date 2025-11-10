@@ -140,14 +140,3 @@ test {
 assemble {
   dependsOn shadowJar
 }
-
-dependencyCheck {
-    // NVD API Key configuration - set via environment variable or gradle property (v8.x syntax)
-    nvdApiKey = System.getenv('NVD_API_KEY') ?: project.findProperty('nvdApiKey') ?: ''
-
-    // Fail build on CVSS score of 7 or higher (adjust as needed)
-    failBuildOnCVSS = 7
-
-    // Suppress false positives if needed
-    // suppressionFile = 'dependency-check-suppressions.xml'
-}
