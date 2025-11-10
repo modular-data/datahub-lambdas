@@ -3,7 +3,7 @@ plugins {
     id 'jacoco'
     id 'com.github.johnrengelman.shadow' version '7.1.1' // originally 7.1.2 but downgraded since circle CI build was failing
     id 'org.sonarqube'  version '3.5.0.2730'
-    id 'org.owasp.dependencycheck'  version '8.4.3'
+    id 'org.owasp.dependencycheck'  version '8.2.1'
     id 'org.gradle.java-test-fixtures'
     id 'org.barfuin.gradle.jacocolog' version '3.1.0'
 }
@@ -142,11 +142,12 @@ assemble {
 }
 
 dependencyCheck {
-    // Skip NVD database updates - analyze with local/cached data only
-    autoUpdate = false
-    
-    // Disable NVD checks entirely (avoids 403 errors from deprecated API)
-    nvdDatafeed {
-        enabled = false
-    }
+    // NVD API Key configuration - set via environment variable or gradle property (v8.x syntax)
+    nvdApiKey = System.getenv('NVD_API_KEY') ?: project.findProperty('nvdApiKey') ?: ''
+
+    // Fail build on CVSS score of 7 or higher (adjust as needed)
+    failBuildOnCVSS = 7
+
+    // Suppress false positives if needed
+    // suppressionFile = 'dependency-check-suppressions.xml'
 }
