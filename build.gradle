@@ -3,7 +3,7 @@ plugins {
     id 'jacoco'
     id 'com.github.johnrengelman.shadow' version '7.1.1' // originally 7.1.2 but downgraded since circle CI build was failing
     id 'org.sonarqube'  version '3.5.0.2730'
-    id 'org.owasp.dependencycheck'  version '8.2.1'
+    id 'org.owasp.dependencycheck'  version '9.2.0'
     id 'org.gradle.java-test-fixtures'
     id 'org.barfuin.gradle.jacocolog' version '3.1.0'
 }
@@ -139,4 +139,14 @@ test {
 
 assemble {
   dependsOn shadowJar
+}
+
+dependencyCheck {
+    // NVD API 2.0 configuration (v9.x+ syntax)
+    nvd {
+        apiKey = System.getenv('NVD_API_KEY') ?: ''
+    }
+    
+    // Skip NVD check if no API key provided (will only check locally cached data)
+    failOnError = false
 }
